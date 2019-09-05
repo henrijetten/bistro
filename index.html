@@ -7,12 +7,31 @@
 
 
     <style>
-        .content {
+        .ret {
             background-color: aquamarine;
-            width: 300px;
-            height: 300px;
-            padding: 1rem;
-            margin: 1rem;
+            width: 400px;
+            height: 400px;
+            padding: 0.5rem;
+            margin: 0.5rem;
+        }
+
+        #liste {
+            display: grid;
+            grid-gap: 5px;
+        }
+
+        @media screen and (min-width:600px) {
+            #liste {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (min-width:768px) {
+            #liste {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 960px;
+                margin: 0 auto;
+            }
         }
     </style>
 
@@ -20,21 +39,31 @@
 
 <body>
     <h1>Menu</h1>
+    <button>Alle</button>
+    <button>Forretter</button>
+    <button>Hovedretter</button>
+    <button>Dessert</button>
+    <button>Sideorders</button>
+    <button>Drikkevarer</button>
+
     <section id="liste"></section>
     <template>
         <article class="ret">
-
             <img class="billede_lille">
+
             <h2></h2>
             <p class="kort"></p>
             <p class="pris"></p>
+
         </article>
     </template>
 
 
-
     <script>
-        let rett = [];
+     /*   let retter;
+        const dest = document.querySelector("#liste");
+        const listePointer = document.querySelector("#liste");
+        let filterKategori = "alle";*/
         document.addEventListener("DOMContentLoaded", start);
 
         function start() {
@@ -50,43 +79,33 @@
 
         const skabelon = document.querySelector("template").content;
 
+
         function visRetter() {
             document.querySelector("template").content;
             const liste = document.querySelector("#liste");
             console.log(visRetter);
             retter.feed.entry.forEach(ret => {
-                const klon = skabelon.cloneNode(true);
-                console.log("hgjgjhgj",klon);
+                    const klon = skabelon.cloneNode(true);
+                console.log(klon);
 
-                const h2 = klon.querySelector("h2");                console.log(h2, ret.gsx$navn.$t);
+                const h2 = klon.querySelector("h2");
+                console.log(h2, ret.gsx$navn.$t);
 
                 h2.textContent = ret.gsx$navn.$t;
-                
+
                 const kort = klon.querySelector(".ret .kort");
-                kort.textContent += ret.gsx$kort.$t;
-                
+                kort.textContent = ret.gsx$kort.$t;
+
                 const pris = klon.querySelector(".ret .pris");
-                pris.textContent += ret.gsx$pris.$t;
-                
+                pris.textContent = ret.gsx$pris.$t;
+
+                const img = klon.querySelector("img");
+                img.src = "imgs/small/" + ret.gsx$billede.$t + "-sm.jpg";
+                img.alt = "Billede af " + ret.gsx$billede.$t;
+
                 //TIL SIDST SKAL KLONEN TILFØJES LISTEN SÅ DATA + HTML BLIVER VIST, I LISTEN
-                liste.appendChild(klon); 
+                liste.appendChild(klon);
             });
         }
-
-        /*        array.forEach(mad => {
-                    const klon = skabelon.cloneNode(true);
-                    console.log(klon);
-
-                    const h2 = klon.querySelector("h2");
-                    h2.textContent = mad.navn;
-
-                    const info = klon.querySelector(".content .kort");
-                    info.textContent += mad.kort;
-
-                    const img = klon.querySelector("img");
-                    img.src = mad.thumb;
-                    img.alt = "Billede af " + mad.navn;
-                    listeElm.appendChild(klon);
-                })*/
     </script>
 </body></html>
