@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="DA">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bistro Babushka</title>
+
+
+    <style>
+        .content {
+            background-color: aquamarine;
+            width: 300px;
+            height: 300px;
+            padding: 1rem;
+            margin: 1rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Menu</h1>
+    <section id="liste"></section>
+    <template>
+        <article class="ret">
+
+            <img class="billede_lille">
+            <h2></h2>
+            <p class="kort"></p>
+            <p class="pris"></p>
+        </article>
+    </template>
+
+
+
+    <script>
+        let rett = [];
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            hentJson();
+        }
+
+        async function hentJson() {
+            const myJson = await fetch("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+            retter = await myJson.json();
+            visRetter();
+        }
+
+
+        const skabelon = document.querySelector("template").content;
+
+        function visRetter() {
+            document.querySelector("template").content;
+            const liste = document.querySelector("#liste");
+            console.log(visRetter);
+            retter.feed.entry.forEach(ret => {
+                const klon = skabelon.cloneNode(true);
+                console.log("hgjgjhgj",klon);
+
+                const h2 = klon.querySelector("h2");                console.log(h2, ret.gsx$navn.$t);
+
+                h2.textContent = ret.gsx$navn.$t;
+                
+                const kort = klon.querySelector(".ret .kort");
+                kort.textContent += ret.gsx$kort.$t;
+                
+                const pris = klon.querySelector(".ret .pris");
+                pris.textContent += ret.gsx$pris.$t;
+                
+                //TIL SIDST SKAL KLONEN TILFØJES LISTEN SÅ DATA + HTML BLIVER VIST, I LISTEN
+                liste.appendChild(klon); 
+            });
+        }
+
+        /*        array.forEach(mad => {
+                    const klon = skabelon.cloneNode(true);
+                    console.log(klon);
+
+                    const h2 = klon.querySelector("h2");
+                    h2.textContent = mad.navn;
+
+                    const info = klon.querySelector(".content .kort");
+                    info.textContent += mad.kort;
+
+                    const img = klon.querySelector("img");
+                    img.src = mad.thumb;
+                    img.alt = "Billede af " + mad.navn;
+                    listeElm.appendChild(klon);
+                })*/
+    </script>
+</body></html>
